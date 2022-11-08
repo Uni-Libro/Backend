@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.5'
 
 services:
   # proxy:
@@ -18,7 +18,7 @@ services:
       dockerfile: Dockerfile
     container_name: server
     ports:
-      - '3000:3000'
+      - '12345:3000'
     volumes:
       - ./:/app
       - /app/node_modules
