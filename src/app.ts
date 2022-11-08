@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import swaggerJSDoc from 'swagger-jsdoc';
+import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
 import DB from '@databases';
@@ -78,6 +79,10 @@ class App {
 
     const specs = swaggerJSDoc(options);
     this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+    this.app.use('/static', (req, response, next) => {
+      response.setHeader('Content-Security-Policy', '');
+      express.static(path.join(__dirname, 'static'))(req, response, next);
+    });
   }
 
   private initializeErrorHandling() {
