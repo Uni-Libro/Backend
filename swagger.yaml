@@ -1,3 +1,4 @@
+openapi: 3.0.0
 tags:
 - name: users
   description: users API
@@ -103,6 +104,58 @@ paths:
         500:
           description: 'Server Error'
 
+  /signup:
+    post:
+      tags:
+      - Auth
+      summary: the user sign up to server
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/users'
+      responses:
+        201:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+  /login:
+    post:
+      tags:
+      - Auth
+      summary: the user login to server
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/users'
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+  
+  /logout:
+    post:
+      tags:
+      - Auth
+      summary: the user logout
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   users:
@@ -117,6 +170,7 @@ definitions:
       password:
         type: string
         description: user Password
+
 
 schemes:
  - https
