@@ -15,7 +15,7 @@ const sequelize = new Sequelize.Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
     freezeTableName: true,
   },
   pool: {
-    min: 0,
+    min: 1,
     max: 5,
   },
   logQueryParameters: NODE_ENV === 'development',
