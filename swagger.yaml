@@ -1,7 +1,11 @@
 openapi: 3.0.0
 tags:
 - name: users
-  description: users API
+  description: Users API
+- name: books
+  description: Books API
+- name: Auth
+  description: Authentication API
 
 paths:
 # [GET] users
@@ -173,8 +177,108 @@ paths:
           description: 'OK'
         401:
           description: 'invalid token'
-        401:
+        404:
           description: 'Authentication token missing'
+        500:
+          description: 'Server Error'
+
+# [GET] books
+  /books:
+    get:
+      tags:
+      - books
+      summary: Find All Books
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+# [POST] books
+    post:
+      tags:
+      - books
+      summary: Add Book
+      parameters:
+      - name: body
+        in: body
+        description: book Data
+        required: true
+        schema:
+          $ref: '#/definitions/books'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [GET] books/id
+  /books/{id}:
+    get:
+      tags:
+      - books
+      summary: Find Book By Id
+      parameters:
+      - name: id
+        in: path
+        description: Book Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [PUT] books/id
+    put:
+      tags:
+      - books
+      summary: Update Book By Id
+      parameters:
+      - name: id
+        in: path
+        description: book Id
+        required: true
+        type: integer
+      - name: body
+        in: body
+        description: book Data
+        required: true
+        schema:
+          $ref: '#/definitions/books'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [DELETE] books/id
+    delete:
+      tags:
+      - books
+      summary: Delete Book By Id
+      parameters:
+      - name: id
+        in: path
+        description: book Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
         500:
           description: 'Server Error'
 
@@ -192,6 +296,37 @@ definitions:
       password:
         type: string
         description: user Password
+  books:
+    type: object
+    required:
+        - name
+        - imageUrl
+        - authorName
+        - description
+        - price
+        - category
+    properties:
+      id:
+        type: integer
+        description: the id of book
+      name:
+        type: string
+        description: the book name
+      authorName:
+        type: string
+        description: the author name
+      imageUrl:
+        type: string
+        description: the image of book
+      description:
+        type: string
+        description: the description about book
+      price:
+        type: integer
+        description: the price of book
+      category:
+        type: string
+        description: the category that book belongs to
 
 
 schemes:
