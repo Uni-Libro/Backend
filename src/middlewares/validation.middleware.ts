@@ -7,7 +7,7 @@ const validationMiddleware = (
   type: any,
   value: string | 'body' | 'query' | 'params' = 'body',
   skipMissingProperties = false,
-  whitelist = true,
+  whitelist = false,
   forbidNonWhitelisted = true,
 ): RequestHandler => {
   return (req, res, next) => {

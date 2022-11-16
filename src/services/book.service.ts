@@ -4,7 +4,7 @@ import { HttpException } from '@exceptions/HttpException';
 import { Book } from '@interfaces/books.interface';
 import { isEmpty } from '@utils/util';
 
-class UserService {
+class BookService {
   public books = DB.Books;
 
   public async findAllBook(): Promise<Book[]> {
@@ -48,4 +48,4 @@ class UserService {
   }
 }
 
-export default UserService;
+export default BookService;
