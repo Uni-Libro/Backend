@@ -156,6 +156,24 @@ paths:
         500:
           description: 'Server Error'
 
+  /validate:
+    post:
+      tags:
+      - Auth
+      summary: the user token is valid or not
+      parameters:
+      - name: Authorization
+        in: header
+        description: the user token
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   users:
