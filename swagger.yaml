@@ -169,8 +169,12 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        204:
           description: 'OK'
+        401:
+          description: 'invalid token'
+        401:
+          description: 'Authentication token missing'
         500:
           description: 'Server Error'
 

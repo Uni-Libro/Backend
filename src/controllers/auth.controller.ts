@@ -40,6 +40,10 @@ class AuthController {
       next(error);
     }
   };
+
+  public validate = async (req: RequestWithUser, res: Response) => {
+    res.status(204).json();
+  };
 }
 
 export default AuthController;
