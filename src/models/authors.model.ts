@@ -41,7 +41,7 @@ export default function (sequelize: Sequelize): typeof AuthorModel {
       },
     },
     {
-      tableName: 'books',
+      tableName: 'author',
       sequelize,
     },
   );
