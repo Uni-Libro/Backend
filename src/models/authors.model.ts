@@ -37,7 +37,6 @@ export default function (sequelize: Sequelize): typeof AuthorModel {
       books: {
         type: DataTypes.ARRAY(DataTypes.INTEGER),
         allowNull: false,
-        defaultValue: [],
       },
     },
     {
