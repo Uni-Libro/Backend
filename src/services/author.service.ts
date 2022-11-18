@@ -12,10 +12,10 @@ class AuthorService {
   }
 
   public async findAuthorById(authorId: number): Promise<Author> {
-    const findBook: Author = await this.authors.findOne({ where: { id: authorId } });
-    if (!findBook) throw new HttpException(404, "The book you're looking for doesn't exist");
+    const findedAuthor: Author = await this.authors.findOne({ where: { id: authorId } });
+    if (!findedAuthor) throw new HttpException(404, "The author you're looking for doesn't exist");
 
-    return findBook;
+    return findedAuthor;
   }
 
   public async createAuthor(authorData: CreateAuthorDto): Promise<Author> {
@@ -27,21 +27,21 @@ class AuthorService {
   public async updateAuthor(authorId: number, authorData: CreateAuthorDto): Promise<Author> {
     if (isEmpty(authorData)) throw new HttpException(400, 'The author should have data');
 
-    const findBook: Author = await this.authors.findOne({ where: { id: authorId } });
-    if (!findBook) throw new HttpException(404, "The author you're looking for doesn't exist");
+    const findedAuthor: Author = await this.authors.findOne({ where: { id: authorId } });
+    if (!findedAuthor) throw new HttpException(404, "The author you're looking for doesn't exist");
 
     await this.authors.update({ ...authorData }, { where: { id: authorId } });
 
-    return findBook;
+    return findedAuthor;
   }
 
   public async deleteAuthor(authorId: number): Promise<Author> {
-    const findBook: Author = await this.authors.findOne({ where: { id: authorId } });
-    if (!findBook) throw new HttpException(404, "The author you're looking for doesn't exist");
+    const findedAuthor: Author = await this.authors.findOne({ where: { id: authorId } });
+    if (!findedAuthor) throw new HttpException(404, "The author you're looking for doesn't exist");
 
     await this.authors.destroy({ where: { id: authorId } });
 
-    return findBook;
+    return findedAuthor;
   }
 }
 
