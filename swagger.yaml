@@ -6,6 +6,10 @@ tags:
   description: Books API
 - name: Auth
   description: Authentication API
+- name: authors
+  description: Authors API
+- name: categories
+  description: Categories API
 
 paths:
 # [GET] users
@@ -382,6 +386,106 @@ paths:
         500:
           description: 'Server Error'
 
+# [GET] categories
+  /categories:
+    get:
+      tags:
+      - categories
+      summary: Find All categories
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+# [POST] categories
+    post:
+      tags:
+      - categories
+      summary: Add category
+      parameters:
+      - name: body
+        in: body
+        description: category Data
+        required: true
+        schema:
+          $ref: '#/definitions/categories'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [GET] categories/id
+  /categories/{id}:
+    get:
+      tags:
+      - categories
+      summary: Find category By Id
+      parameters:
+      - name: id
+        in: path
+        description: category Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [PUT] categories/id
+    put:
+      tags:
+      - categories
+      summary: Update category By Id
+      parameters:
+      - name: id
+        in: path
+        description: category Id
+        required: true
+        type: integer
+      - name: body
+        in: body
+        description: category Data
+        required: true
+        schema:
+          $ref: '#/definitions/categories'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [DELETE] categories/id
+    delete:
+      tags:
+      - categories
+      summary: Delete category By Id
+      parameters:
+      - name: id
+        in: path
+        description: category Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   users:
@@ -471,6 +575,18 @@ definitions:
       description:
         type: string
         description: the description about author
+  categories:
+    type: object
+    required:
+        - id
+        - name
+    properties:
+      id:
+        type: integer
+        description: the id of category
+      name:
+        type: string
+        description: the category name
 
 
 schemes:
