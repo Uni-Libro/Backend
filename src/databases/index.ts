@@ -4,6 +4,8 @@ import UserModel from '@models/users.model';
 import { logger } from '@utils/logger';
 import BookModel from '@/models/books.model';
 import AuthorModel from '@/models/authors.model';
+import CategoryModel from '@/models/category.model';
+import bookCategoryModel from '@/models/bookCategory.model';
 
 const sequelize = new Sequelize.Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
   dialect: 'mysql',
@@ -33,8 +35,12 @@ const DB = {
   Users: UserModel(sequelize),
   Books: BookModel(sequelize),
   Author: AuthorModel(sequelize),
+  Category: CategoryModel(sequelize),
   sequelize, // connection instance (RAW queries)
   Sequelize, // library
 };
 
+export const Relations = {
+  BookCategory: bookCategoryModel(sequelize, DB.Books, DB.Category),
+};
 export default DB;
