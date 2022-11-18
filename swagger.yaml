@@ -282,6 +282,106 @@ paths:
         500:
           description: 'Server Error'
 
+# [GET] authors
+  /authors:
+    get:
+      tags:
+      - authors
+      summary: Find All authors
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+# [POST] authors
+    post:
+      tags:
+      - authors
+      summary: Add author
+      parameters:
+      - name: body
+        in: body
+        description: author Data
+        required: true
+        schema:
+          $ref: '#/definitions/authors'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [GET] authors/id
+  /authors/{id}:
+    get:
+      tags:
+      - authors
+      summary: Find author By Id
+      parameters:
+      - name: id
+        in: path
+        description: author Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [PUT] authors/id
+    put:
+      tags:
+      - authors
+      summary: Update author By Id
+      parameters:
+      - name: id
+        in: path
+        description: author Id
+        required: true
+        type: integer
+      - name: body
+        in: body
+        description: author Data
+        required: true
+        schema:
+          $ref: '#/definitions/authors'
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+# [DELETE] author/id
+    delete:
+      tags:
+      - authors
+      summary: Delete Author By Id
+      parameters:
+      - name: id
+        in: path
+        description: author Id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: 'OK'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   users:
@@ -327,6 +427,26 @@ definitions:
       category:
         type: string
         description: the category that book belongs to
+  authors:
+    type: object
+    required:
+        - id
+        - name
+        - imageUrl
+        - description
+    properties:
+      id:
+        type: integer
+        description: the id of author
+      name:
+        type: string
+        description: the author name
+      imageUrl:
+        type: string
+        description: the image of author
+      description:
+        type: string
+        description: the description about author
 
 
 schemes:
