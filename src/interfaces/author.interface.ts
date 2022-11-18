@@ -4,5 +4,4 @@ export interface Author {
   name: string;
   imageUrl: string;
   description: string;
-  books: Book['id'][];
 }

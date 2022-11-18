@@ -1,4 +1,4 @@
-import { IsArray, IsString, IsUrl } from 'class-validator';
+import { IsString, IsUrl } from 'class-validator';
 
 export class CreateAuthorDto {
   @IsString()
@@ -9,7 +9,4 @@ export class CreateAuthorDto {
 
   @IsString()
   public description: string;
-
-  @IsArray()
-  public books: Array<number>;
 }

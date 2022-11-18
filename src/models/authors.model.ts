@@ -34,19 +34,6 @@ export default function (sequelize: Sequelize): typeof AuthorModel {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      books: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        get() {
-          //@ts-expect-error TODO: fix types
-          return this.getDataValue('books').split(';');
-        },
-        set(val) {
-          //@ts-expect-error TODO: fix types
-          this.setDataValue('books', val.join(';'));
-        },
-        defaultValue: '[]',
-      },
     },
     {
       tableName: 'author',
