@@ -16,3 +16,11 @@ export class CreateUserDto {
   @IsString()
   public lastName: string;
 }
+
+export class LoginUserDto {
+  @IsString()
+  public password: string;
+
+  @IsString()
+  public username: string;
+}

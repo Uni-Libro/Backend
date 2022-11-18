@@ -137,7 +137,7 @@ paths:
         description: user Data
         required: true
         schema:
-          $ref: '#/definitions/users'
+          $ref: '#/definitions/auth'
       responses:
         200:
           description: 'OK'
@@ -389,10 +389,34 @@ definitions:
     required:
         - email
         - password
+        - username
+        - firstName
+        - lastName
     properties:
       email:
         type: string
         description: user Email
+      password:
+        type: string
+        description: user Password
+      username:
+        type: string
+        description: user username
+      firstName:
+        type: string
+        description: user firstName
+      lastName:
+        type: string
+        description: user LastName
+  auth:
+    type: object
+    required:
+        - password
+        - username
+    properties:
+      username:
+        type: string
+        description: user username
       password:
         type: string
         description: user Password

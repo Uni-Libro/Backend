@@ -26,6 +26,7 @@ export default function (sequelize: Sequelize): typeof UserModel {
       email: {
         allowNull: false,
         type: DataTypes.STRING(45),
+        unique: true,
       },
       password: {
         allowNull: false,
@@ -34,6 +35,7 @@ export default function (sequelize: Sequelize): typeof UserModel {
       username: {
         allowNull: false,
         type: DataTypes.STRING(255),
+        unique: true,
       },
       firstName: {
         allowNull: false,
