@@ -130,6 +130,34 @@ paths:
         500:
           description: 'Server Error'
 
+
+
+  /profile:
+    post:
+      tags:
+      - users
+      summary: update user data
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/users'
+      responses:
+        201:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+    get:
+      tags:
+      - users
+      summary: get user profile
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
   /login:
     post:
       tags:
