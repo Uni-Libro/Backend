@@ -133,7 +133,7 @@ paths:
 
 
   /profile:
-    post:
+    put:
       tags:
       - users
       summary: update user data
