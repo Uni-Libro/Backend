@@ -27,7 +27,7 @@ export default function (sequelize: Sequelize): typeof AuthorModel {
         allowNull: false,
       },
       imageUrl: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       description: {

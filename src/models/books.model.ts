@@ -34,7 +34,7 @@ export default function (sequelize: Sequelize): typeof BookModel {
         allowNull: false,
       },
       imageUrl: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       description: {
