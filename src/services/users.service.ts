@@ -42,8 +42,11 @@ class UserService {
     const findedUserByUsername: User = await this.users.findOne({ where: { username: userData.username } });
     if (findedUserByUsername && findedUserByUsername.id !== userId) throw new HttpException(409, `This username ${userData.username} already exists`);
 
-    const hashedPassword = await hash(userData.password, 10);
-    await this.users.update({ ...userData, password: hashedPassword }, { where: { id: userId } });
+    if (userData.password) {
+      userData.password = await hash(userData.password, 10);
+    }
+
+    await this.users.update({ ...userData }, { where: { id: userId } });
 
     const updateUser: User = await this.users.findByPk(userId);
     return updateUser;

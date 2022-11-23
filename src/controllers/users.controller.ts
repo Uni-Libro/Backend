@@ -75,15 +75,8 @@ class UsersController {
   public saveProfile = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const { user } = req;
-      const {
-        email = user.email,
-        firstName = user.firstName,
-        lastName = user.lastName,
-        password = user.password,
-        username = user.username,
-      } = req.body as CreateUserDto;
 
-      const updatedUser = await this.userService.updateUser(user.id, { ...user, email, firstName, lastName, password, username });
+      const updatedUser = await this.userService.updateUser(user.id, { ...req.body });
 
       res.status(200).json({ data: updatedUser, message: 'saveProfile' });
     } catch (error) {
