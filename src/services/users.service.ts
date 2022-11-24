@@ -37,10 +37,15 @@ class UserService {
 
     const findUser: User = await this.users.findByPk(userId);
     if (!findUser) throw new HttpException(409, "User doesn't exist");
-    const findedUserByMail: User = await this.users.findOne({ where: { email: userData.email } });
-    if (findedUserByMail && findedUserByMail.id !== userId) throw new HttpException(409, `This email ${userData.email} already exists`);
-    const findedUserByUsername: User = await this.users.findOne({ where: { username: userData.username } });
-    if (findedUserByUsername && findedUserByUsername.id !== userId) throw new HttpException(409, `This username ${userData.username} already exists`);
+    if (userData.email) {
+      const findedUserByMail: User = await this.users.findOne({ where: { email: userData.email } });
+      if (findedUserByMail && findedUserByMail.id !== userId) throw new HttpException(409, `This email ${userData.email} already exists`);
+    }
+    if (userData.username) {
+      const findedUserByUsername: User = await this.users.findOne({ where: { username: userData.username } });
+      if (findedUserByUsername && findedUserByUsername.id !== userId)
+        throw new HttpException(409, `This username ${userData.username} already exists`);
+    }
 
     if (userData.password) {
       userData.password = await hash(userData.password, 10);
