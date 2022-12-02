@@ -220,6 +220,13 @@ paths:
       tags:
       - books
       summary: Find All Books
+      parameters:
+      - name: Authorization
+        in: header
+        description: the user token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -238,6 +245,12 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/books'
+      - name: Authorization
+        in: header
+        description: the user token
+        required: true
+        schema:
+          type: string
       responses:
         201:
           description: 'Created'
@@ -260,6 +273,12 @@ paths:
         description: Book Id
         required: true
         type: integer
+      - name: Authorization
+        in: header
+        description: the user token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'

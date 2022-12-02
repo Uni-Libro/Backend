@@ -13,13 +13,17 @@ class BookService {
   public authors = DB.Author;
 
   public async findAllBook(): Promise<Book[]> {
-    return this.books.findAll();
+    return this.books.findAll({
+      include: [{ model: this.categories }, { model: this.authors, attributes: ['id', 'name'] }],
+    });
   }
 
   public async findBookById(bookId: number): Promise<Book> {
-    const findBook: Book = await this.books.findOne({ where: { id: bookId } });
+    const findBook = await this.books.findOne({
+      where: { id: bookId },
+      include: [{ model: this.categories }, { model: this.authors, attributes: ['id', 'name'] }],
+    });
     if (!findBook) throw new HttpException(404, "The book you're looking for doesn't exist");
-
     return findBook;
   }
 

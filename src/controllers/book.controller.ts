@@ -18,8 +18,8 @@ class BookController {
 
   public getBookById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId = Number(req.params.id);
-      const findOneBookData: Book = await this.booksService.findBookById(userId);
+      const bookId = Number(req.params.id);
+      const findOneBookData: Book = await this.booksService.findBookById(bookId);
 
       res.status(200).json({ data: findOneBookData, message: 'findOne' });
     } catch (error) {
