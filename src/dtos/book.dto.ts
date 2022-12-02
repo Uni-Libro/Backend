@@ -4,8 +4,8 @@ export class CreateBookDto {
   @IsString()
   public name: string;
 
-  @IsString()
-  public authorName: string;
+  @IsNumber({}, { each: true })
+  public authors: Array<number>;
 
   @IsUrl()
   public imageUrl: string;

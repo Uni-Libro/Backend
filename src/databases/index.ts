@@ -6,6 +6,7 @@ import BookModel from '@/models/books.model';
 import AuthorModel from '@/models/authors.model';
 import CategoryModel from '@/models/category.model';
 import bookCategoryModel from '@/models/bookCategory.model';
+import bookAuthorModel from '@/models/bookAuthor.model';
 
 const sequelize = new Sequelize.Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
   dialect: 'mysql',
@@ -42,5 +43,6 @@ const DB = {
 
 export const Relations = {
   BookCategory: bookCategoryModel(sequelize, DB.Books, DB.Category),
+  BookAuthor: bookAuthorModel(sequelize, DB.Books, DB.Author),
 };
 export default DB;

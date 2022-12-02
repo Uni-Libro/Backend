@@ -6,7 +6,6 @@ export type BookCreationAttributes = Book;
 export class BookModel extends Model<Book, BookCreationAttributes> implements Book {
   public id: number;
   public name: string;
-  public authorName: string;
   public imageUrl: string;
   public description: string;
   public price: number;
@@ -25,10 +24,6 @@ export default function (sequelize: Sequelize): typeof BookModel {
         type: DataTypes.INTEGER,
       },
       name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      authorName: {
         type: DataTypes.STRING,
         allowNull: false,
       },
