@@ -10,7 +10,6 @@ export class BookModel extends Model<Book, BookCreationAttributes> implements Bo
   public imageUrl: string;
   public description: string;
   public price: number;
-  public category: string;
   public password: string;
 
   public readonly createdAt!: Date;
@@ -43,10 +42,6 @@ export default function (sequelize: Sequelize): typeof BookModel {
       },
       price: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      category: {
-        type: DataTypes.STRING,
         allowNull: false,
       },
     },

@@ -10,12 +10,12 @@ export class CreateBookDto {
   @IsUrl()
   public imageUrl: string;
 
-  @IsString()
-  public category: string;
+  @IsNumber({}, { each: true })
+  public category: Array<number>;
 
   @IsString()
   public description: string;
 
   @IsNumber()
-  public price: string;
+  public price: number;
 }

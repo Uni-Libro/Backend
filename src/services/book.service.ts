@@ -1,4 +1,4 @@
-import DB from '@databases';
+import DB, { Relations } from '@databases';
 import { CreateBookDto } from '@dtos/book.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { Book } from '@interfaces/books.interface';
@@ -6,6 +6,8 @@ import { isEmpty } from '@utils/util';
 
 class BookService {
   public books = DB.Books;
+  public bookCategory = Relations.BookCategory;
+  public categories = DB.Category;
 
   public async findAllBook(): Promise<Book[]> {
     return this.books.findAll();
@@ -23,8 +25,13 @@ class BookService {
 
     const findBook: Book = await this.books.findOne({ where: { name: bookData.name } });
     if (findBook) throw new HttpException(409, `You're book ${bookData.name} already exists`);
-
-    return this.books.create({ ...bookData });
+    const { category } = bookData;
+    if (category.length === 0) throw new HttpException(400, 'The book should have at least one category');
+    const categoriesMapping = await this.categories.findAll({ where: { id: { $in: category } } });
+    console.log(categoriesMapping);
+    const book = await this.books.create({ ...bookData });
+    this.bookCategory.bulkCreate(category.map(id => ({ bookId: book.id, categoryId: id })));
+    return book;
   }
 
   public async updateBook(bookId: number, bookData: CreateBookDto): Promise<Book> {
