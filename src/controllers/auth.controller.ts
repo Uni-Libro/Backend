@@ -44,6 +44,30 @@ class AuthController {
   public validate = async (req: RequestWithUser, res: Response) => {
     res.status(204).json();
   };
+
+  //method for sending OTP
+  public sendOTP = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userData: LoginUserDto = req.body;
+      const tokenData = await this.authService.sendOTP(userData);
+
+      res.status(200).json({ data: tokenData, message: 'login' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  //method for validating OTP
+  public validateOTP = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userData: LoginUserDto = req.body;
+      const tokenData = await this.authService.validateOTP(userData);
+
+      res.status(200).json({ data: tokenData, message: 'login' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default AuthController;

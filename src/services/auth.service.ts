@@ -48,6 +48,18 @@ class AuthService {
     return findUser;
   }
 
+  //method for sending OTP
+  public async sendOTP(userData: LoginUserDto): Promise<TokenData> {
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+    return null;
+  }
+
+  //method for validating OTP
+  public async validateOTP(userData: LoginUserDto): Promise<TokenData> {
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+    return null;
+  }
+
   public createToken(user: User): TokenData {
     const dataStoredInToken: DataStoredInToken = { id: user.id };
     const secretKey: string = SECRET_KEY;
