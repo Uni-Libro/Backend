@@ -2,11 +2,11 @@ import { compare, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { SECRET_KEY } from '@config';
 import DB from '@databases';
-import { CreateUserDto, LoginUserDto } from '@dtos/users.dto';
+import { CreateUserDto, LoginUserDto, OTPUserDto, ValidateOTPUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
-import { isEmpty } from '@utils/util';
+import { isEmpty, IsPhone } from '@utils/util';
 import { isEmail } from 'class-validator';
 
 class AuthService {
@@ -49,14 +49,20 @@ class AuthService {
   }
 
   //method for sending OTP
-  public async sendOTP(userData: LoginUserDto): Promise<TokenData> {
-    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+  public async sendOTP(userData: OTPUserDto): Promise<undefined> {
+    if (isEmpty(userData) || IsPhone(userData.phone)) throw new HttpException(400, 'userData is empty');
+    //generate otp
+    //save otp va user phone in redis database
+    //send otp to user phone
     return null;
   }
 
   //method for validating OTP
-  public async validateOTP(userData: LoginUserDto): Promise<TokenData> {
+  public async validateOTP(userData: ValidateOTPUserDto): Promise<TokenData> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+    //check otp va user phone in redis database
+    //if otp is valid, create token and return it
+    //if doesn't exist, throw exception
     return null;
   }
 

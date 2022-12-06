@@ -15,6 +15,9 @@ export class CreateUserDto {
 
   @IsString()
   public lastName: string;
+
+  @IsString()
+  public phone: string;
 }
 
 export class LoginUserDto {
@@ -23,4 +26,17 @@ export class LoginUserDto {
 
   @IsString()
   public username: string;
+}
+
+export class OTPUserDto {
+  @IsString()
+  public phone: string;
+}
+
+export class ValidateOTPUserDto {
+  @IsString()
+  public phone: string;
+
+  @IsString()
+  public otp: string;
 }

@@ -10,6 +10,7 @@ export class UserModel extends Model<User, UserCreationAttributes> implements Us
   public username: string;
   public firstName: string;
   public lastName: string;
+  public phone: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -44,6 +45,10 @@ export default function (sequelize: Sequelize): typeof UserModel {
       lastName: {
         allowNull: false,
         type: DataTypes.STRING(255),
+      },
+      phone: {
+        allowNull: false,
+        type: DataTypes.STRING(14),
       },
     },
     {

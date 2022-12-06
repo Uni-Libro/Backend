@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { CreateUserDto, LoginUserDto } from '@dtos/users.dto';
+import { CreateUserDto, LoginUserDto, OTPUserDto, ValidateOTPUserDto } from '@dtos/users.dto';
 import { User } from '@interfaces/users.interface';
 import { RequestWithUser } from '@interfaces/auth.interface';
 import AuthService from '@services/auth.service';
@@ -48,10 +48,10 @@ class AuthController {
   //method for sending OTP
   public sendOTP = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userData: LoginUserDto = req.body;
-      const tokenData = await this.authService.sendOTP(userData);
+      const userData: OTPUserDto = req.body;
+      await this.authService.sendOTP(userData);
 
-      res.status(200).json({ data: tokenData, message: 'login' });
+      res.status(200).json({ message: 'OTP send successful' });
     } catch (error) {
       next(error);
     }
@@ -60,7 +60,7 @@ class AuthController {
   //method for validating OTP
   public validateOTP = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userData: LoginUserDto = req.body;
+      const userData: ValidateOTPUserDto = req.body;
       const tokenData = await this.authService.validateOTP(userData);
 
       res.status(200).json({ data: tokenData, message: 'login' });
