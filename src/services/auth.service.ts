@@ -52,7 +52,7 @@ class AuthService {
   public async sendOTP(userData: OTPUserDto): Promise<undefined> {
     if (isEmpty(userData) || IsPhone(userData.phone)) throw new HttpException(400, 'userData is empty');
     //generate otp
-    //save otp va user phone in redis database
+    //save otp and user phone in redis database
     //send otp to user phone
     return null;
   }
