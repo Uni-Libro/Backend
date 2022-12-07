@@ -8,6 +8,7 @@ import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
 import { isEmpty, IsPhone } from '@utils/util';
 import { isEmail } from 'class-validator';
+import { redisDB } from '@databases';
 
 class AuthService {
   public users = DB.Users;
@@ -54,6 +55,7 @@ class AuthService {
     //generate otp
     const otp = Math.floor(100000 + Math.random() * 900000);
     //save otp and user phone in redis database
+    redisDB.set(userData.phone, otp);
     //send otp to user phone
     return null;
   }
