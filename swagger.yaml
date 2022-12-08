@@ -533,7 +533,7 @@ paths:
         500:
           description: 'Server Error'
 
-# [POST] books
+#  bookmarks
   /bookmarks:
     get:
       tags:
@@ -563,7 +563,7 @@ paths:
         description: bookmarks Data
         required: true
         schema:
-          $ref: '#/definitions/boomarks'
+          $ref: '#/definitions/bookmarks'
       - name: Authorization
         in: header
         description: the user token
@@ -571,8 +571,8 @@ paths:
         schema:
           type: string
       responses:
-        200:
-          description: 'removed'
+        204:
+          description: 'removed, no content'
         400:
           description: 'Bad Request'
         500:
@@ -587,7 +587,7 @@ paths:
         description: bookmarks Data
         required: true
         schema:
-          $ref: '#/definitions/boomarks'
+          $ref: '#/definitions/bookmarks'
       - name: Authorization
         in: header
         description: the user token
@@ -639,8 +639,8 @@ paths:
         schema:
           type: string
       responses:
-        200:
-          description: 'removed'
+        204:
+          description: 'removed, no content'
         400:
           description: 'Bad Request'
         500:

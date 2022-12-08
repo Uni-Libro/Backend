@@ -16,7 +16,7 @@ class BookUser implements Routes {
 
   private initializeRoutes() {
     this.router.get(`/bookmarks`, authMiddleware, this.bookController.getBookmarks);
-    this.router.post(`/bookmarks`, validationMiddleware(CreateBookMarkDto, 'body'), this.bookController.addBookmark);
+    this.router.post(`/bookmarks`, authMiddleware, validationMiddleware(CreateBookMarkDto, 'body'), this.bookController.addBookmark);
     this.router.delete(`/bookmarks`, authMiddleware, this.bookController.removeBookmark);
   }
 }

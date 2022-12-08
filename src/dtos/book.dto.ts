@@ -23,9 +23,6 @@ export class CreateBookDto {
 export class CreateBookMarkDto {
   @IsNumber()
   public bookId: number;
-
-  @IsNumber()
-  public userId: number;
 }
 
 export class AddToCartDto {

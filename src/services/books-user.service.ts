@@ -11,12 +11,12 @@ class BookUserService {
     if (!bookId || !userId) throw new HttpException(400, 'Invalid data');
     const book = await this.books.findByPk(bookId);
     if (!book) throw new HttpException(404, 'Book not found');
-    await this.bookmark.create({ bookId, userId });
+    await this.bookmark.create({ BookModelId: bookId, UserModelId: userId });
     return;
   }
 
   public async removeBookmark(bookId: number, userId: number): Promise<void> {
-    await this.bookmark.destroy({ where: { bookId, userId } });
+    await this.bookmark.destroy({ where: { BookModelId: bookId, UserModelId: userId } });
     return;
   }
 

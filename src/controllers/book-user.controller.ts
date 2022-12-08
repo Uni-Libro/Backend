@@ -5,10 +5,10 @@ class BookUserController {
 
   public addBookmark = async (req, res, next) => {
     try {
-      const { bookId } = req.params;
+      const { bookId } = req.body;
       const { id: userId } = req.user;
       await this.bookUserService.bookmarkBook(Number(bookId), userId);
-      res.status(204).json();
+      res.status(201).json();
     } catch (error) {
       next(error);
     }
@@ -16,7 +16,7 @@ class BookUserController {
 
   public removeBookmark = async (req, res, next) => {
     try {
-      const { bookId } = req.params;
+      const { bookId } = req.body;
       const { id: userId } = req.user;
       await this.bookUserService.removeBookmark(Number(bookId), userId);
       res.status(204).json();
