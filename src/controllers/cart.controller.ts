@@ -16,7 +16,7 @@ class CartController {
 
   public removeFromCart = async (req, res, next) => {
     try {
-      const { bookId } = req.params;
+      const { bookId } = req.body;
       const { id: userId } = req.user;
       await this.cartService.removeFromCart(Number(bookId), userId);
       res.status(204).json();
