@@ -22,8 +22,10 @@ class CartService {
 
   public async getCart(userId: number): Promise<Book[]> {
     const bookIds = await this.cart.findAll({ where: { UserModelId: userId }, attributes: ['BookModelId'] });
-    // @ts-expect-error TODO: sequelize bug with property form
-    const books = await this.books.findAll({ where: { id: bookIds.map(b => b.BookModelId), include: [{ model: DB.Author }] } });
+    const books = await this.books.findAll({
+      // @ts-expect-error TODO: sequelize bug with property form
+      where: { id: bookIds.map(b => b.BookModelId), include: [{ model: DB.Author }, { model: DB.Category }] },
+    });
     return books;
   }
 }
