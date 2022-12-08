@@ -20,8 +20,11 @@ class BookUserService {
     return;
   }
 
-  public getBookmarks(userId: number): Promise<Book[]> {
-    return this.users.findAll({ where: { id: userId }, include: [{ model: this.books }], attributes: ['id'] }) as unknown as Promise<Book[]>;
+  public async getBookmarks(userId: number): Promise<Book[]> {
+    const bookIds = await this.bookmark.findAll({ where: { UserModelId: userId }, attributes: ['BookModelId'] });
+    // @ts-expect-error TODO: sequelize bug with property form
+    const books = await this.books.findAll({ where: { id: bookIds.map(b => b.BookModelId) }, include: [{ model: DB.Author }] });
+    return books;
   }
 }
 

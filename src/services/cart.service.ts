@@ -11,7 +11,6 @@ class CartService {
     if (!bookId || !userId) throw new HttpException(400, 'Invalid data');
     const book = await this.books.findByPk(bookId);
     if (!book) throw new HttpException(404, 'Book not found');
-    console.log(bookId, userId);
     await this.cart.create({ BookModelId: 1, UserModelId: userId });
     return;
   }
@@ -21,8 +20,11 @@ class CartService {
     return;
   }
 
-  public getCart(userId: number): Promise<Book[]> {
-    return this.users.findAll({ where: { id: userId }, include: [{ model: this.books }], attributes: ['id'] }) as unknown as Promise<Book[]>;
+  public async getCart(userId: number): Promise<Book[]> {
+    const bookIds = await this.cart.findAll({ where: { UserModelId: userId }, attributes: ['BookModelId'] });
+    // @ts-expect-error TODO: sequelize bug with property form
+    const books = await this.books.findAll({ where: { id: bookIds.map(b => b.BookModelId), include: [{ model: DB.Author }] } });
+    return books;
   }
 }
 
