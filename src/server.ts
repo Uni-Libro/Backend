@@ -6,7 +6,8 @@ import BookRoute from '@routes/book.route';
 import AuthorRoute from '@routes/author.route';
 import BookUserRoute from '@routes/book-user.route';
 import validateEnv from '@utils/validateEnv';
-import CategoryRoute from './routes/category.route';
+import CategoryRoute from '@routes/category.route';
+import CartRoute from '@routes/cart.route';
 
 validateEnv();
 
@@ -18,6 +19,7 @@ const app = new App([
   new AuthorRoute(),
   new CategoryRoute(),
   new BookUserRoute(),
+  new CartRoute(),
 ]);
 
 app.listen();

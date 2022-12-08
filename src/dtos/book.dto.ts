@@ -27,3 +27,8 @@ export class CreateBookMarkDto {
   @IsNumber()
   public userId: number;
 }
+
+export class AddToCartDto {
+  @IsNumber()
+  public bookId: number;
+}
