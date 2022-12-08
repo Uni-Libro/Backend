@@ -55,7 +55,9 @@ class AuthService {
     //generate otp
     const otp = Math.floor(100000 + Math.random() * 900000);
     //save otp and user phone in redis database
-    redisDB.set(userData.phone, otp);
+    await redisDB.set(userData.phone, otp, {
+      EX: 60 * 2,
+    });
     //send otp to user phone
     return null;
   }
@@ -63,6 +65,8 @@ class AuthService {
   //method for validating OTP
   public async validateOTP(userData: ValidateOTPUserDto): Promise<TokenData> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+    const otp = await redisDB.get(userData.phone);
+    if (otp !== userData.otp) throw new HttpException(401, 'OTP not matching');
     //check otp va user phone in redis database
     //if otp is valid, create token and return it
     //if doesn't exist, throw exception

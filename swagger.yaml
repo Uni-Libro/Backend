@@ -177,7 +177,7 @@ paths:
           description: 'OK'
         500:
           description: 'Server Error'
-  
+
   /logout:
     post:
       tags:
@@ -216,6 +216,42 @@ paths:
         500:
           description: 'Server Error'
 
+
+  /otp/send:
+    post:
+      tags:
+      - Auth
+      summary: the user logout
+      parameters:
+      - name: body
+          in: body
+          description: bookmarks Data
+          required: true
+          schema:
+            $ref: '#/definitions/bookmarks'
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+  /otp/validate:
+    post:
+      tags:
+      - Auth
+      summary: the user logout
+      parameters:
+      - name: body
+        in: body
+        description: bookmarks Data
+        required: true
+        schema:
+          $ref: '#/definitions/bookmarks'
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
 # [GET] books
   /books:
     get:
@@ -1024,7 +1060,26 @@ definitions:
       validTo:
         type: date
         description: the time that code is not valid
-
+  phone:
+    type: object
+    required:
+        - phone
+    properties:
+      phone:
+        type: string
+        description: the phone number of user
+  otp:
+    type: object
+    required:
+        - phone
+        - otp
+    properties:
+      phone:
+        type: string
+        description: the phone number of user
+      otp:
+        type: integer
+        description: the otp send to the user
 
 schemes:
  - https

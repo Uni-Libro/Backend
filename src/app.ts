@@ -13,6 +13,7 @@ import DB from '@databases';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
+import { redisDB } from '@databases';
 
 class App {
   public app: express.Application;
@@ -46,6 +47,7 @@ class App {
 
   private connectToDatabase() {
     DB.sequelize.sync({ force: false });
+    redisDB.connect();
   }
 
   private initializeMiddlewares() {

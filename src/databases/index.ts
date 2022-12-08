@@ -12,14 +12,17 @@ import cartModel from '@/models/cart.model';
 import voucherModel from '@/models/voucher.model';
 import userBook from '@/models/userBooks.model';
 
+import * as redis from 'redis';
+import { REDIS_CONN_STRING } from '@/config';
 //add redis database for storing otp and user phone
-const redis = require('redis');
-const client = redis.createClient();
+const client = redis.createClient({
+  url: REDIS_CONN_STRING,
+});
 client.on('connect', function () {
-  console.log('Redis client connected');
+  logger.info('Redis client connected');
 });
 client.on('error', function (err) {
-  console.log('Something went wrong ' + err);
+  logger.error('Something went wrong ' + err);
 });
 
 const sequelize = new Sequelize.Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
