@@ -19,3 +19,11 @@ export class CreateBookDto {
   @IsNumber()
   public price: number;
 }
+
+export class CreateBookMarkDto {
+  @IsNumber()
+  public bookId: number;
+
+  @IsNumber()
+  public userId: number;
+}

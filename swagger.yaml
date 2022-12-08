@@ -533,6 +533,75 @@ paths:
         500:
           description: 'Server Error'
 
+# [POST] books
+  /bookmarks:
+    get:
+      tags:
+      - bookmarks
+      summary: get all Bookmarks
+      parameters:
+      - name: Authorization
+        in: header
+        description: the user token
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: 'All bookmarks'
+        400:
+          description: 'Bad Request'
+        500:
+          description: 'Server Error'
+    delete:
+      tags:
+      - bookmarks
+      summary: remove Bookmark
+      parameters:
+      - name: body
+        in: body
+        description: bookmarks Data
+        required: true
+        schema:
+          $ref: '#/definitions/boomarks'
+      - name: Authorization
+        in: header
+        description: the user token
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: 'removed'
+        400:
+          description: 'Bad Request'
+        500:
+          description: 'Server Error'
+    post:
+      tags:
+      - bookmarks
+      summary: Add Bookmark
+      parameters:
+      - name: body
+        in: body
+        description: bookmarks Data
+        required: true
+        schema:
+          $ref: '#/definitions/boomarks'
+      - name: Authorization
+        in: header
+        description: the user token
+        required: true
+        schema:
+          type: string
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        500:
+          description: 'Server Error'
+
 # definitions
 definitions:
   users:
@@ -634,7 +703,14 @@ definitions:
       name:
         type: string
         description: the category name
-
+  bookmarks:
+    type: object
+    required:
+        - bookId
+    properties:
+      bookId:
+        type: number
+        description: the book ID
 
 schemes:
  - https
