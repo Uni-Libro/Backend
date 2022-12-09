@@ -11,7 +11,7 @@ class CartService {
     if (!bookId || !userId) throw new HttpException(400, 'Invalid data');
     const book = await this.books.findByPk(bookId);
     if (!book) throw new HttpException(404, 'Book not found');
-    await this.cart.create({ BookModelId: 1, UserModelId: userId });
+    await this.cart.create({ BookModelId: bookId, UserModelId: userId });
     return;
   }
 
