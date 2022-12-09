@@ -33,9 +33,10 @@ class CartController {
       const { voucherCode } = req.body;
       const cart = await this.cartService.getCart(userId);
       const discount = voucherCode ? await this.voucherService.calculateDiscount(voucherCode, cart.totalPrice) : 0;
-      res
-        .status(200)
-        .json({ data: { ...cart, discount: discount * cart.totalPrice, finalPrice: (100 - discount) * cart.totalPrice }, message: 'cart' });
+      res.status(200).json({
+        data: { ...cart, discount, finalPrice: cart.totalPrice - discount },
+        message: 'cart',
+      });
     } catch (error) {
       next(error);
     }
