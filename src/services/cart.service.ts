@@ -20,14 +20,15 @@ class CartService {
     return;
   }
 
-  public async getCart(userId: number): Promise<Book[]> {
+  public async getCart(userId: number): Promise<{ books: Book[]; totalPrice: number }> {
     const bookIds = await this.cart.findAll({ where: { UserModelId: userId }, attributes: ['BookModelId'] });
     const books = await this.books.findAll({
       // @ts-expect-error TODO: sequelize bug with property form
       where: { id: bookIds.map(b => b.BookModelId) },
       include: [{ model: DB.Author }, { model: DB.Category }],
     });
-    return books;
+    const totalPrice = books.reduce((acc, book) => acc + book.price, 0);
+    return { books, totalPrice };
   }
 }
 

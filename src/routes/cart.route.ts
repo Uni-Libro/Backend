@@ -18,6 +18,7 @@ class CartRoute implements Routes {
     this.router.get(`${this.path}`, authMiddleware, this.bookController.getCart);
     this.router.post(`${this.path}`, authMiddleware, validationMiddleware(AddToCartDto, 'body'), this.bookController.addToCart);
     this.router.delete(`${this.path}`, authMiddleware, this.bookController.removeFromCart);
+    this.router.post(`/voucher/apply`, authMiddleware, this.bookController.applyVoucher);
   }
 }
 

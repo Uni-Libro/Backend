@@ -9,6 +9,7 @@ import bookCategoryModel from '@/models/bookCategory.model';
 import bookAuthorModel from '@/models/bookAuthor.model';
 import bookmarksModel from '@/models/bookmarks.model';
 import cartModel from '@/models/cart.model';
+import voucherModel from '@/models/voucher.model';
 
 const sequelize = new Sequelize.Sequelize(DB_DATABASE, DB_USER, DB_PASSWORD, {
   dialect: 'mysql',
@@ -39,6 +40,7 @@ const DB = {
   Books: BookModel(sequelize),
   Author: AuthorModel(sequelize),
   Category: CategoryModel(sequelize),
+  Voucher: voucherModel(sequelize),
   sequelize, // connection instance (RAW queries)
   Sequelize, // library
 };
