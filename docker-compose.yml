@@ -46,7 +46,7 @@ services:
     command: /bin/sh -c "redis-server --requirepass $$REDIS_HOST_PASSWORD"
     restart: always
     ports:
-      - '6379:6379'
+      - '6380:6379'
     env_file:
       - .env.production.local
 

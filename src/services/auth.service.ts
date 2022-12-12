@@ -35,7 +35,7 @@ class AuthService {
 
   //method for sending OTP
   public async sendOTP(userData: OTPUserDto): Promise<void> {
-    if (isEmpty(userData) || !IsPhone(userData.phone)) throw new HttpException(400, 'userData is empty');
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
     //generate otp
     const otp = Math.floor(100000 + Math.random() * 900000);
     //save otp and user phone in redis database
