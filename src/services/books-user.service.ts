@@ -4,6 +4,7 @@ import DB, { Relations } from '@databases';
 
 class BookUserService {
   public bookmark = Relations.BookMark;
+  public userBooks = Relations.UserBooks;
   public books = DB.Books;
   public users = DB.Users;
 
@@ -22,6 +23,16 @@ class BookUserService {
 
   public async getBookmarks(userId: number): Promise<Book[]> {
     const bookIds = await this.bookmark.findAll({ where: { UserModelId: userId }, attributes: ['BookModelId'] });
+    const books = await this.books.findAll({
+      // @ts-expect-error TODO: sequelize bug with property form
+      where: { id: bookIds.map(b => b.BookModelId) },
+      include: [{ model: DB.Author }, { model: DB.Category }],
+    });
+    return books;
+  }
+
+  public async getUserBooks(userId: number): Promise<Book[]> {
+    const bookIds = await this.userBooks.findAll({ where: { UserModelId: userId }, attributes: ['BookModelId'] });
     const books = await this.books.findAll({
       // @ts-expect-error TODO: sequelize bug with property form
       where: { id: bookIds.map(b => b.BookModelId) },

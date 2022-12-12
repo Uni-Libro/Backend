@@ -34,6 +34,16 @@ class BookUserController {
       next(error);
     }
   };
+
+  public getUserBooks = async (req, res, next) => {
+    try {
+      const { id: userId } = req.user;
+      const userBooks = await this.bookUserService.getUserBooks(userId);
+      res.status(200).json({ data: userBooks, message: 'userBooks' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default BookUserController;

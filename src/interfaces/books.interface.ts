@@ -5,3 +5,5 @@ export interface Book {
   description: string;
   price: number;
 }
+
+export type Cart = { books: Book[]; totalPrice: number };
