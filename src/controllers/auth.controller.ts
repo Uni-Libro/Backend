@@ -18,6 +18,16 @@ class AuthController {
     }
   };
 
+  public getOTP = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const otps = await this.authService.getOTPs();
+
+      res.status(200).json({ data: otps, message: 'otps' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public updatePassword = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const { password } = req.body;

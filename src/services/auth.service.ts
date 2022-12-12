@@ -6,7 +6,7 @@ import { CreateUserDto, OTPUserDto, ValidateOTPUserDto } from '@dtos/users.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
-import { isEmpty, IsPhone } from '@utils/util';
+import { isEmpty } from '@utils/util';
 import { redisDB } from '@databases';
 
 class AuthService {
@@ -22,6 +22,11 @@ class AuthService {
     if (!isPasswordMatching) throw new HttpException(409, 'Password not matching');
 
     return this.createToken(findUser);
+  }
+
+  public async getOTPs(): Promise<Array<string>> {
+    const keys = await redisDB.keys('*');
+    return Promise.all(keys.map(k => redisDB.get(k)));
   }
 
   public async logout(userData: User): Promise<User> {
