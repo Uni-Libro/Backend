@@ -9,6 +9,10 @@ module.exports = {
     await queryInterface.removeColumn('users', 'username');
     await queryInterface.removeColumn('users', 'first_name');
     await queryInterface.removeColumn('users', 'last_name');
+    await queryInterface.addColumn('users', 'phone', {
+      allowNull: false,
+      type: DataTypes.STRING(14),
+    });
   },
 
   async down(queryInterface) {
