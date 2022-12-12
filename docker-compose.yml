@@ -40,6 +40,15 @@ services:
       - '3306:3306'
     networks:
       - backend
+  redis:
+    image: redis
+    container_name: "redis"
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_HOST_PASSWORD"
+    restart: always
+    ports:
+      - '6379:6379'
+    env_file:
+      - .env.production.local
 
 networks:
   backend:

@@ -11,7 +11,6 @@ import bookmarksModel from '@/models/bookmarks.model';
 import cartModel from '@/models/cart.model';
 import voucherModel from '@/models/voucher.model';
 import userBook from '@/models/userBooks.model';
-
 import * as redis from 'redis';
 import { REDIS_CONN_STRING } from '@/config';
 //add redis database for storing otp and user phone

@@ -1,15 +1,11 @@
 import { Sequelize, DataTypes, Model, Optional } from 'sequelize';
 import { User } from '@interfaces/users.interface';
 
-export type UserCreationAttributes = Optional<User, 'id' | 'email' | 'password' | 'username' | 'firstName' | 'lastName'>;
+export type UserCreationAttributes = Optional<User, 'id' | 'password'>;
 
 export class UserModel extends Model<User, UserCreationAttributes> implements User {
   public id: number;
-  public email: string;
   public password: string;
-  public username: string;
-  public firstName: string;
-  public lastName: string;
   public phone: string;
 
   public readonly createdAt!: Date;
@@ -24,26 +20,8 @@ export default function (sequelize: Sequelize): typeof UserModel {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      email: {
-        allowNull: false,
-        type: DataTypes.STRING(45),
-        unique: true,
-      },
       password: {
-        allowNull: false,
-        type: DataTypes.STRING(255),
-      },
-      username: {
-        allowNull: false,
-        type: DataTypes.STRING(255),
-        unique: true,
-      },
-      firstName: {
-        allowNull: false,
-        type: DataTypes.STRING(255),
-      },
-      lastName: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING(255),
       },
       phone: {

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { CreateUserDto, LoginUserDto, OTPUserDto, ValidateOTPUserDto } from '@dtos/users.dto';
+import { CreateUserDto, OTPUserDto, ValidateOTPUserDto } from '@dtos/users.dto';
 import { User } from '@interfaces/users.interface';
 import { RequestWithUser } from '@interfaces/auth.interface';
 import AuthService from '@services/auth.service';
@@ -7,21 +7,21 @@ import AuthService from '@services/auth.service';
 class AuthController {
   public authService = new AuthService();
 
-  public signUp = async (req: Request, res: Response, next: NextFunction) => {
+  public logIn = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userData: CreateUserDto = req.body;
-      const signUpUserData: User = await this.authService.signup(userData);
+      const tokenData = await this.authService.login(userData);
 
-      res.status(201).json({ data: signUpUserData, message: 'signup' });
+      res.status(200).json({ data: tokenData, message: 'login' });
     } catch (error) {
       next(error);
     }
   };
 
-  public logIn = async (req: Request, res: Response, next: NextFunction) => {
+  public updatePassword = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const userData: LoginUserDto = req.body;
-      const tokenData = await this.authService.login(userData);
+      const { password } = req.body;
+      const tokenData = await this.authService.updatePassword(req.user, password);
 
       res.status(200).json({ data: tokenData, message: 'login' });
     } catch (error) {

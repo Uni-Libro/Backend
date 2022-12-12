@@ -114,11 +114,11 @@ paths:
         500:
           description: 'Server Error'
 
-  /signup:
+  /update-password:
     post:
       tags:
       - Auth
-      summary: the user sign up to server
+      summary: the user update password
       parameters:
       - name: body
         in: body
@@ -127,7 +127,7 @@ paths:
         schema:
           $ref: '#/definitions/users'
       responses:
-        201:
+        200:
           description: 'OK'
         500:
           description: 'Server Error'
@@ -221,14 +221,14 @@ paths:
     post:
       tags:
       - Auth
-      summary: the user logout
+      summary: send otp
       parameters:
       - name: body
-          in: body
-          description: bookmarks Data
-          required: true
-          schema:
-            $ref: '#/definitions/bookmarks'
+        in: body
+        description: user phone
+        required: true
+        schema:
+          $ref: '#/definitions/phone'
       responses:
         200:
           description: 'OK'
@@ -239,14 +239,14 @@ paths:
     post:
       tags:
       - Auth
-      summary: the user logout
+      summary: check otp is valid or not
       parameters:
       - name: body
         in: body
-        description: bookmarks Data
+        description: user otp and phone
         required: true
         schema:
-          $ref: '#/definitions/bookmarks'
+          $ref: '#/definitions/otp'
       responses:
         200:
           description: 'OK'
@@ -928,27 +928,11 @@ definitions:
   users:
     type: object
     required:
-        - email
         - password
-        - username
-        - firstName
-        - lastName
     properties:
-      email:
-        type: string
-        description: user Email
       password:
         type: string
         description: user Password
-      username:
-        type: string
-        description: user username
-      firstName:
-        type: string
-        description: user firstName
-      lastName:
-        type: string
-        description: user LastName
   auth:
     type: object
     required:

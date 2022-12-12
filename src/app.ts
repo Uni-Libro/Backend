@@ -47,7 +47,7 @@ class App {
 
   private connectToDatabase() {
     DB.sequelize.sync({ force: false });
-    redisDB.connect();
+    // redisDB.connect();
   }
 
   private initializeMiddlewares() {
