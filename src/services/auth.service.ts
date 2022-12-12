@@ -24,9 +24,13 @@ class AuthService {
     return this.createToken(findUser);
   }
 
-  public async getOTPs(): Promise<Array<string>> {
+  public async getOTPs(): Promise<Array<Record<string, string>>> {
     const keys = await redisDB.keys('*');
-    return Promise.all(keys.map(k => redisDB.get(k)));
+    return Promise.all(
+      keys.map(async k => {
+        return { k: await redisDB.get(k) };
+      }),
+    );
   }
 
   public async logout(userData: User): Promise<User> {
@@ -53,7 +57,7 @@ class AuthService {
   public async validateOTP(userData: ValidateOTPUserDto): Promise<TokenData> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
     const otp = await redisDB.get(userData.phone);
-    if (otp !== userData.otp) throw new HttpException(401, 'OTP not matching');
+    if (Number(otp) !== Number(userData.otp)) throw new HttpException(401, 'OTP not matching');
     const findUserByUsername: User = await this.users.findOne({ where: { phone: userData.phone } });
     const user = findUserByUsername ? findUserByUsername : await this.users.create({ phone: userData.phone });
 
