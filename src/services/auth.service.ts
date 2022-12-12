@@ -28,7 +28,7 @@ class AuthService {
     const keys = await redisDB.keys('*');
     return Promise.all(
       keys.map(async k => {
-        return { k: await redisDB.get(k) };
+        return { [k]: await redisDB.get(k) };
       }),
     );
   }
