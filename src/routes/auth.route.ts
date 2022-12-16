@@ -4,6 +4,7 @@ import { OTPUserDto, CreateUserDto, ValidateOTPUserDto } from '@dtos/users.dto';
 import { Routes } from '@interfaces/routes.interface';
 import authMiddleware from '@middlewares/auth.middleware';
 import validationMiddleware from '@middlewares/validation.middleware';
+import { rateLimit } from 'express-rate-limit';
 
 class AuthRoute implements Routes {
   public path = '/';
@@ -20,7 +21,7 @@ class AuthRoute implements Routes {
     this.router.post(`${this.path}validate`, authMiddleware, this.authController.validate);
     this.router.post(`${this.path}logout`, authMiddleware, this.authController.logOut);
     this.router.get('/otp', this.authController.getOTP);
-    this.router.post(`${this.path}otp/send`, validationMiddleware(OTPUserDto, 'body'), this.authController.sendOTP);
+    this.router.post(`${this.path}otp/send`, validationMiddleware(OTPUserDto, 'body'), rateLimit, this.authController.sendOTP);
     this.router.post(`${this.path}otp/validate`, validationMiddleware(ValidateOTPUserDto, 'body'), this.authController.validateOTP);
   }
 }

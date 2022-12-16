@@ -8,6 +8,7 @@ import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { User } from '@interfaces/users.interface';
 import { isEmpty } from '@utils/util';
 import { redisDB } from '@databases';
+import { sendOTP } from '@/utils/sendSMS';
 
 class AuthService {
   public users = DB.Users;
@@ -46,11 +47,12 @@ class AuthService {
   public async sendOTP(userData: OTPUserDto): Promise<void> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
     //generate otp
-    const otp = Math.floor(100000 + Math.random() * 900000);
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
     //save otp and user phone in redis database
     await redisDB.set(userData.phone, otp, {
       EX: 60 * 2,
     });
+    await sendOTP(userData.phone, otp);
   }
 
   //method for validating OTP
