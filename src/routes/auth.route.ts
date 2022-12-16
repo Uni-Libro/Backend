@@ -4,7 +4,7 @@ import { OTPUserDto, CreateUserDto, ValidateOTPUserDto } from '@dtos/users.dto';
 import { Routes } from '@interfaces/routes.interface';
 import authMiddleware from '@middlewares/auth.middleware';
 import validationMiddleware from '@middlewares/validation.middleware';
-import { rateLimit } from 'express-rate-limit';
+import rateLimit from '@middlewares/rate-limit.middleware';
 
 class AuthRoute implements Routes {
   public path = '/';

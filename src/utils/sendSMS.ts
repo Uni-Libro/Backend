@@ -20,9 +20,9 @@ const sendOTP = (phone: string, token: string) => {
     },
     function (error, response) {
       if (!error && response.statusCode === 200) {
-        logger.error(response.body);
+        logger.info(response.body);
       } else {
-        logger.error('Something went wrong');
+        logger.info('Something went wrong');
       }
     },
   );
