@@ -4,10 +4,12 @@ import { Book } from '@/interfaces/books.interface';
 import { CreateBookDto } from '@/dtos/book.dto';
 import BookUserService from '@/services/books-user.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
+import CartService from '@/services/cart.service';
 
 class BookController {
   public booksService = new booksService();
   public bookUserService = new BookUserService();
+  public cartService = new CartService();
 
   public getBooks = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -32,11 +34,12 @@ class BookController {
   public getBookById = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const bookId = Number(req.params.id);
-      const [findOneBookData, isBuyed] = await Promise.all([
+      const [findOneBookData, isBuyed, isInCart] = await Promise.all([
         this.booksService.findBookById(bookId),
         this.bookUserService.hasBook(bookId, req.user.id),
+        this.cartService.hasBook(bookId, req.user.id),
       ]);
-      res.status(200).json({ data: { ...findOneBookData, isBuyed }, message: 'findOne' });
+      res.status(200).json({ data: { ...findOneBookData, isBuyed, isInCart }, message: 'findOne' });
     } catch (error) {
       next(error);
     }

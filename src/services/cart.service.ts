@@ -10,10 +10,14 @@ class CartService {
 
   public async addToCart(bookId: number, userId: number): Promise<void> {
     if (!bookId || !userId) throw new HttpException(400, 'Invalid data');
-    const book = await this.books.findByPk(bookId);
+    const [book, userBooks, cartBook] = await Promise.all([
+      this.books.findByPk(bookId),
+      this.userBooks.findOne({ where: { BookModelId: bookId, UserModelId: userId } }),
+      this.hasBook(bookId, userId),
+    ]);
     if (!book) throw new HttpException(404, 'Book not found');
-    const userBooks = await this.userBooks.findOne({ where: { BookModelId: bookId, UserModelId: userId } });
     if (userBooks) throw new HttpException(400, 'Book already in user books');
+    if (cartBook) throw new HttpException(400, 'Book already in cart');
     await this.cart.create({ BookModelId: bookId, UserModelId: userId });
     return;
   }
@@ -21,6 +25,11 @@ class CartService {
   public async removeFromCart(bookId: number, userId: number): Promise<void> {
     await this.cart.destroy({ where: { BookModelId: bookId, UserModelId: userId } });
     return;
+  }
+
+  public async hasBook(bookId: number, userId: number): Promise<boolean> {
+    const book = await this.cart.findOne({ where: { BookModelId: bookId, UserModelId: userId } });
+    return Boolean(book);
   }
 
   public async addCartToUserBooks(userId: number, cart: Cart): Promise<Cart> {
