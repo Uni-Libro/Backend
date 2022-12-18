@@ -9,7 +9,11 @@ class UsersController {
 
   public getUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const findAllUsersData: User[] = await this.userService.findAllUser();
+      const { limit, offset } = req.query;
+      const findAllUsersData: User[] = await this.userService.findAllUser({
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+      });
 
       res.status(200).json({ data: findAllUsersData, message: 'findAll' });
     } catch (error) {

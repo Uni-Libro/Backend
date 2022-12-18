@@ -28,7 +28,8 @@ class BookUserController {
   public getBookmarks = async (req, res, next) => {
     try {
       const { id: userId } = req.user;
-      const bookmarks = await this.bookUserService.getBookmarks(userId);
+      const { limit, offset } = req.query;
+      const bookmarks = await this.bookUserService.getBookmarks(userId, { limit, offset });
       res.status(200).json({ data: bookmarks, message: 'bookmarks' });
     } catch (error) {
       next(error);
@@ -38,7 +39,9 @@ class BookUserController {
   public getUserBooks = async (req, res, next) => {
     try {
       const { id: userId } = req.user;
-      const userBooks = await this.bookUserService.getUserBooks(userId);
+      const { limit, offset } = req.query;
+
+      const userBooks = await this.bookUserService.getUserBooks(userId, { limit, offset });
       res.status(200).json({ data: userBooks, message: 'userBooks' });
     } catch (error) {
       next(error);

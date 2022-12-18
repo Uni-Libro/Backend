@@ -1,4 +1,5 @@
 import { HttpException } from '@/exceptions/HttpException';
+import { Pagination } from '@/interfaces/API.interface';
 import { Book } from '@/interfaces/books.interface';
 import DB, { Relations } from '@databases';
 
@@ -21,24 +22,33 @@ class BookUserService {
     return;
   }
 
-  public async getBookmarks(userId: number): Promise<Book[]> {
+  public async getBookmarks(userId: number, { limit, offset }: Pagination): Promise<Book[]> {
     const bookIds = await this.bookmark.findAll({ where: { UserModelId: userId }, attributes: ['BookModelId'] });
     const books = await this.books.findAll({
       // @ts-expect-error TODO: sequelize bug with property form
       where: { id: bookIds.map(b => b.BookModelId) },
       include: [{ model: DB.Author }, { model: DB.Category }],
+      limit,
+      offset,
     });
     return books;
   }
 
-  public async getUserBooks(userId: number): Promise<Book[]> {
+  public async getUserBooks(userId: number, { limit, offset }: Pagination): Promise<Book[]> {
     const bookIds = await this.userBooks.findAll({ where: { UserModelId: userId }, attributes: ['BookModelId'] });
     const books = await this.books.findAll({
       // @ts-expect-error TODO: sequelize bug with property form
       where: { id: bookIds.map(b => b.BookModelId) },
       include: [{ model: DB.Author }, { model: DB.Category }],
+      limit,
+      offset,
     });
     return books;
+  }
+
+  public async hasBook(bookId: number, userId: number): Promise<boolean> {
+    const book = await this.userBooks.findOne({ where: { BookModelId: bookId, UserModelId: userId } });
+    return Boolean(book);
   }
 }
 

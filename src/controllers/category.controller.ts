@@ -8,7 +8,11 @@ class CategoryController {
 
   public getCategories = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const findAllCategoriesData: Category[] = await this.categoryService.findAllCategory();
+      const { limit, offset } = req.query;
+      const findAllCategoriesData: Category[] = await this.categoryService.findAllCategory({
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+      });
 
       res.status(200).json({ data: findAllCategoriesData, message: 'findAll' });
     } catch (error) {

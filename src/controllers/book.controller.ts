@@ -2,13 +2,26 @@ import { NextFunction, Request, Response } from 'express';
 import booksService from '@services/book.service';
 import { Book } from '@/interfaces/books.interface';
 import { CreateBookDto } from '@/dtos/book.dto';
+import BookUserService from '@/services/books-user.service';
+import { RequestWithUser } from '@/interfaces/auth.interface';
 
 class BookController {
   public booksService = new booksService();
+  public bookUserService = new BookUserService();
 
   public getBooks = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const findAllBooksData: Book[] = await this.booksService.findAllBook();
+      const { limit, offset, category } = req.query;
+
+      const findAllBooksData: Book[] = category
+        ? await this.booksService.findBookByCategory(Number(category), {
+            limit: limit ? Number(limit) : undefined,
+            offset: offset ? Number(offset) : undefined,
+          })
+        : await this.booksService.findAllBook({
+            limit: limit ? Number(limit) : undefined,
+            offset: offset ? Number(offset) : undefined,
+          });
 
       res.status(200).json({ data: findAllBooksData, message: 'findAll' });
     } catch (error) {
@@ -16,12 +29,14 @@ class BookController {
     }
   };
 
-  public getBookById = async (req: Request, res: Response, next: NextFunction) => {
+  public getBookById = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const bookId = Number(req.params.id);
-      const findOneBookData: Book = await this.booksService.findBookById(bookId);
-
-      res.status(200).json({ data: findOneBookData, message: 'findOne' });
+      const [findOneBookData, isBuyed] = await Promise.all([
+        this.booksService.findBookById(bookId),
+        this.bookUserService.hasBook(bookId, req.user.id),
+      ]);
+      res.status(200).json({ data: { ...findOneBookData, isBuyed }, message: 'findOne' });
     } catch (error) {
       next(error);
     }

@@ -8,7 +8,11 @@ class VoucherController {
 
   public getVouchers = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const findAllVouchersData: Voucher[] = await this.voucherService.findAllVoucher();
+      const { limit, offset } = req.query;
+      const findAllVouchersData: Voucher[] = await this.voucherService.findAllVoucher({
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+      });
 
       res.status(200).json({ data: findAllVouchersData, message: 'findAll' });
     } catch (error) {

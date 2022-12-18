@@ -1,3 +1,4 @@
+import { Pagination } from '@/interfaces/API.interface';
 import DB from '@databases';
 import { CreateAuthorDto } from '@dtos/authors.dto';
 import { HttpException } from '@exceptions/HttpException';
@@ -7,8 +8,11 @@ import { isEmpty } from '@utils/util';
 class AuthorService {
   public authors = DB.Author;
 
-  public async findAllAuthor(): Promise<Author[]> {
-    return this.authors.findAll();
+  public async findAllAuthor({ limit, offset }: Pagination): Promise<Author[]> {
+    return this.authors.findAll({
+      limit: limit ? Number(limit) : undefined,
+      offset: offset ? Number(offset) : undefined,
+    });
   }
 
   public async findAuthorById(authorId: number): Promise<Author> {

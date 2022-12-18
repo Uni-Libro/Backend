@@ -1,3 +1,4 @@
+import { Pagination } from '@/interfaces/API.interface';
 import { logger } from '@/utils/logger';
 import DB, { Relations } from '@databases';
 import { CreateBookDto } from '@dtos/book.dto';
@@ -12,9 +13,27 @@ class BookService {
   public categories = DB.Category;
   public authors = DB.Author;
 
-  public async findAllBook(): Promise<Book[]> {
+  public async findAllBook({ limit, offset }: Pagination): Promise<Book[]> {
     return this.books.findAll({
       include: [{ model: this.categories }, { model: this.authors }],
+      attributes: ['id', 'name', 'imageUrl', 'description', 'price'],
+      limit,
+      offset,
+    });
+  }
+
+  public async findBookByCategory(categoryId: number, { limit, offset }: Pagination): Promise<Book[]> {
+    return this.books.findAll({
+      include: [
+        {
+          model: this.categories,
+          where: { id: categoryId },
+        },
+        { model: this.authors },
+      ],
+      attributes: ['id', 'name', 'imageUrl', 'description', 'price'],
+      limit,
+      offset,
     });
   }
 
@@ -24,7 +43,7 @@ class BookService {
       include: [{ model: this.categories }, { model: this.authors }],
     });
     if (!findBook) throw new HttpException(404, "The book you're looking for doesn't exist");
-    return findBook;
+    return findBook.toJSON();
   }
 
   public async createBook(bookData: CreateBookDto): Promise<Book> {

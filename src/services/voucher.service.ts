@@ -1,3 +1,4 @@
+import { Pagination } from '@/interfaces/API.interface';
 import DB from '@databases';
 import { CreateVoucherDto } from '@dtos/voucher.dto';
 import { HttpException } from '@exceptions/HttpException';
@@ -7,8 +8,11 @@ import { isEmpty } from '@utils/util';
 class VoucherService {
   public voucher = DB.Voucher;
 
-  public async findAllVoucher(): Promise<Voucher[]> {
-    return this.voucher.findAll();
+  public async findAllVoucher({ limit, offset }: Pagination): Promise<Voucher[]> {
+    return this.voucher.findAll({
+      limit: limit ? Number(limit) : undefined,
+      offset: offset ? Number(offset) : undefined,
+    });
   }
 
   public async findVoucherById(voucherId: number): Promise<Voucher> {
