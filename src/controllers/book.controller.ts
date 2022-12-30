@@ -13,16 +13,16 @@ class BookController {
 
   public getBooks = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { limit, offset, category } = req.query;
+      const { limit, page, category } = req.query;
 
       const findAllBooksData: Book[] = category
         ? await this.booksService.findBookByCategory(Number(category), {
             limit: limit ? Number(limit) : undefined,
-            offset: offset ? Number(offset) : undefined,
+            page: page ? Number(page) : undefined,
           })
         : await this.booksService.findAllBook({
             limit: limit ? Number(limit) : undefined,
-            offset: offset ? Number(offset) : undefined,
+            page: page ? Number(page) : undefined,
           });
 
       res.status(200).json({ data: findAllBooksData, message: 'findAll' });
@@ -74,6 +74,17 @@ class BookController {
       const deleteBookData: Book = await this.booksService.deleteBook(userId);
 
       res.status(200).json({ data: deleteBookData, message: 'deleted' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public searchBooks = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { query } = req.query;
+      const searchBooksData: Book[] = await this.booksService.searchBooks(String(query));
+
+      res.status(200).json({ data: searchBooksData, message: 'search' });
     } catch (error) {
       next(error);
     }

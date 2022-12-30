@@ -1,3 +1,4 @@
+import { PAGE_SIZE } from '@/config';
 import { Pagination } from '@/interfaces/API.interface';
 import { logger } from '@/utils/logger';
 import DB, { Relations } from '@databases';
@@ -13,16 +14,16 @@ class BookService {
   public categories = DB.Category;
   public authors = DB.Author;
 
-  public async findAllBook({ limit, offset }: Pagination): Promise<Book[]> {
+  public async findAllBook({ limit, page }: Pagination): Promise<Book[]> {
     return this.books.findAll({
       include: [{ model: this.categories }, { model: this.authors }],
       attributes: ['id', 'name', 'imageUrl', 'description', 'price'],
       limit,
-      offset,
+      offset: page ? page * PAGE_SIZE : undefined,
     });
   }
 
-  public async findBookByCategory(categoryId: number, { limit, offset }: Pagination): Promise<Book[]> {
+  public async findBookByCategory(categoryId: number, { limit, page }: Pagination): Promise<Book[]> {
     return this.books.findAll({
       include: [
         {
@@ -33,7 +34,7 @@ class BookService {
       ],
       attributes: ['id', 'name', 'imageUrl', 'description', 'price'],
       limit,
-      offset,
+      offset: page ? page * PAGE_SIZE : undefined,
     });
   }
 
@@ -87,6 +88,26 @@ class BookService {
     await this.books.destroy({ where: { id: bookId } });
 
     return findBook;
+  }
+
+  public async searchBooks(query: string): Promise<Array<Book>> {
+    const [book, authorBooks] = await Promise.all([
+      this.books.findAll({
+        where: { name: { [DB.Sequelize.Op.like]: `%${query}%` } },
+        include: [{ model: DB.Author }, { model: DB.Category }],
+      }),
+      this.authors
+        .findAll({
+          where: { name: { [DB.Sequelize.Op.like]: `%${query}%` } },
+        })
+        .then(authors =>
+          this.books.findAll({
+            include: [{ model: DB.Author, where: { id: { [DB.Sequelize.Op.in]: authors.map(author => author.id) } } }, { model: DB.Category }],
+          }),
+        ),
+    ]);
+
+    return [...book, ...authorBooks];
   }
 }
 

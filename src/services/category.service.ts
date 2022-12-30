@@ -1,3 +1,4 @@
+import { PAGE_SIZE } from '@/config';
 import { Pagination } from '@/interfaces/API.interface';
 import DB from '@databases';
 import { CreateCategoryDto } from '@dtos/category.dto';
@@ -8,10 +9,10 @@ import { isEmpty } from '@utils/util';
 class CategoryService {
   public categories = DB.Category;
 
-  public async findAllCategory({ limit, offset }: Pagination): Promise<Category[]> {
+  public async findAllCategory({ limit, page }: Pagination): Promise<Category[]> {
     return this.categories.findAll({
       limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
+      offset: page ? page * PAGE_SIZE : undefined,
     });
   }
 

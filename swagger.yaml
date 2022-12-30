@@ -20,6 +20,17 @@ paths:
       tags:
       - users
       summary: Find All Users
+      parameters:
+      - name: page
+        in: query
+        description: page number
+        required: false
+        type: integer
+      - name: limit
+        in: query
+        description: number of items per page
+        required: false
+        type: integer
       responses:
         200:
           description: 'OK'
@@ -265,6 +276,16 @@ paths:
         required: true
         schema:
           type: string
+      - name: page
+        in: query
+        description: page number
+        required: false
+        type: integer
+      - name: limit
+        in: query
+        description: number of items per page
+        required: false
+        type: integer
       responses:
         200:
           description: 'OK'
@@ -296,6 +317,30 @@ paths:
           description: 'Bad Request'
         409:
           description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+
+  /books/search:
+    get:
+      tags:
+      - books
+      summary: Search in books
+      parameters:
+      - name: Authorization
+        in: header
+        description: the user token
+        required: true
+        schema:
+          type: string
+      - name: query
+        in: query
+        description: book title
+        required: false
+        type: string
+      responses:
+        200:
+          description: 'OK'
         500:
           description: 'Server Error'
 
@@ -377,6 +422,17 @@ paths:
       tags:
       - authors
       summary: Find All authors
+      parameters:
+      - name: page
+        in: query
+        description: page number
+        required: false
+        type: integer
+      - name: limit
+        in: query
+        description: number of items per page
+        required: false
+        type: integer
       responses:
         200:
           description: 'OK'
@@ -477,6 +533,17 @@ paths:
       tags:
       - categories
       summary: Find All categories
+      parameters:
+      - name: page
+        in: query
+        description: page number
+        required: false
+        type: integer
+      - name: limit
+        in: query
+        description: number of items per page
+        required: false
+        type: integer
       responses:
         200:
           description: 'OK'
@@ -803,6 +870,16 @@ paths:
         required: true
         schema:
           type: string
+      - name: page
+        in: query
+        description: page number
+        required: false
+        type: integer
+      - name: limit
+        in: query
+        description: number of items per page
+        required: false
+        type: integer
       summary: Find All vouchers
       responses:
         200:

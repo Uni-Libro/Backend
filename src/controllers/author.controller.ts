@@ -8,10 +8,10 @@ class AuthorController {
 
   public getAuthors = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { limit, offset } = req.query;
+      const { limit, page } = req.query;
       const findAllAuthorsData: Author[] = await this.authorService.findAllAuthor({
         limit: limit ? Number(limit) : undefined,
-        offset: offset ? Number(offset) : undefined,
+        page: page ? Number(page) : undefined,
       });
 
       res.status(200).json({ data: findAllAuthorsData, message: 'findAll' });

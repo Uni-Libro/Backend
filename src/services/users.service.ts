@@ -3,14 +3,15 @@ import { HttpException } from '@exceptions/HttpException';
 import { User } from '@interfaces/users.interface';
 import { isEmpty } from '@utils/util';
 import { Pagination } from '@/interfaces/API.interface';
+import { PAGE_SIZE } from '@/config';
 
 class UserService {
   public users = DB.Users;
 
-  public async findAllUser({ limit, offset }: Pagination): Promise<User[]> {
+  public async findAllUser({ limit, page }: Pagination): Promise<User[]> {
     const allUser: User[] = await this.users.findAll({
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
+      limit,
+      offset: page ? page * PAGE_SIZE : undefined,
     });
     return allUser;
   }

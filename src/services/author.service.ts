@@ -1,3 +1,4 @@
+import { PAGE_SIZE } from '@/config';
 import { Pagination } from '@/interfaces/API.interface';
 import DB from '@databases';
 import { CreateAuthorDto } from '@dtos/authors.dto';
@@ -8,10 +9,10 @@ import { isEmpty } from '@utils/util';
 class AuthorService {
   public authors = DB.Author;
 
-  public async findAllAuthor({ limit, offset }: Pagination): Promise<Author[]> {
+  public async findAllAuthor({ limit, page }: Pagination): Promise<Author[]> {
     return this.authors.findAll({
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
+      limit,
+      offset: page ? page * PAGE_SIZE : undefined,
     });
   }
 
