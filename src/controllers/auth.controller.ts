@@ -24,7 +24,7 @@ class AuthController {
     try {
       const userData: CreateAdminDto = req.body;
       const tokenData = await this.authService.adminLogin(userData);
-      req.cookies['Authorization'] = tokenData.token;
+      res.cookie['Authorization'] = tokenData.token;
       res.status(200).json({ data: tokenData, message: 'login' });
     } catch (error) {
       next(error);
