@@ -5,6 +5,7 @@ import { CreateBookDto } from '@/dtos/book.dto';
 import BookUserService from '@/services/books-user.service';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import CartService from '@/services/cart.service';
+import { UploadedObjectInfo } from 'minio';
 
 class BookController {
   public booksService = new booksService();
@@ -74,6 +75,19 @@ class BookController {
       const deleteBookData: Book = await this.booksService.deleteBook(userId);
 
       res.status(200).json({ data: deleteBookData, message: 'deleted' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public uploadBookFile = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const bookId = Number(req.body.file_id);
+      const file = req.file;
+
+      const uploadBookFileData: UploadedObjectInfo = await this.booksService.uploadBook(bookId, file);
+
+      res.status(200).json({ data: uploadBookFileData, message: 'uploaded' });
     } catch (error) {
       next(error);
     }

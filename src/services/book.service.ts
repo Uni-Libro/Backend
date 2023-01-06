@@ -1,11 +1,14 @@
 import { PAGE_SIZE } from '@/config';
 import { Pagination } from '@/interfaces/API.interface';
 import { logger } from '@/utils/logger';
+import minioClient from '@/utils/minioClient';
 import DB, { Relations } from '@databases';
 import { CreateBookDto } from '@dtos/book.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { Book } from '@interfaces/books.interface';
 import { isEmpty } from '@utils/util';
+import { UploadedObjectInfo } from 'minio';
+import fs from 'fs';
 
 class BookService {
   public books = DB.Books;
@@ -38,13 +41,26 @@ class BookService {
     });
   }
 
-  public async findBookById(bookId: number): Promise<Book> {
+  public async findBookById(bookId: number): Promise<Book & { downloadUrl: string }> {
     const findBook = await this.books.findOne({
       where: { id: bookId },
       include: [{ model: this.categories }, { model: this.authors }],
     });
+    const downloadUrl = await minioClient.presignedGetObject('books', findBook.id.toString(), 60 * 60 * 24 * 7, {
+      'Content-Type': 'application/pdf',
+    });
+
     if (!findBook) throw new HttpException(404, "The book you're looking for doesn't exist");
-    return findBook.toJSON();
+    return { ...findBook.toJSON(), downloadUrl };
+  }
+
+  // upload book to minio
+  public async uploadBook(bookId: number, file: Express.Multer.File): Promise<UploadedObjectInfo> {
+    const findBook = await this.books.findOne({ where: { id: bookId } });
+    if (!findBook) throw new HttpException(404, "The book you're looking for doesn't exist");
+    console.log(file.stream);
+    const data = await minioClient.putObject('books', bookId.toString(), file.buffer);
+    return data;
   }
 
   public async createBook(bookData: CreateBookDto): Promise<Book> {
