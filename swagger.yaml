@@ -31,6 +31,12 @@ paths:
         description: number of items per page
         required: false
         type: integer
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -49,6 +55,12 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/users'
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         201:
           description: 'Created'
@@ -71,6 +83,12 @@ paths:
         description: User Id
         required: true
         type: integer
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -96,6 +114,12 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/users'
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -117,6 +141,12 @@ paths:
         description: user Id
         required: true
         type: integer
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -188,6 +218,24 @@ paths:
           description: 'OK'
         500:
           description: 'Server Error'
+  
+  /admin/login:
+    post:
+      tags:
+      - Auth
+      summary: the admin login to server
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/auth'
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
 
   /logout:
     post:
@@ -201,6 +249,24 @@ paths:
             type: string
       responses:
         200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+  /admin/signup:
+    post:
+      tags:
+      - Auth
+      summary: the admin sign up to server
+      parameters:
+      - name: body
+        in: body
+        description: admin Data
+        required: true
+        schema:
+          $ref: '#/definitions/admin'
+      responses:
+        201:
           description: 'OK'
         500:
           description: 'Server Error'
@@ -272,7 +338,7 @@ paths:
       parameters:
       - name: Authorization
         in: header
-        description: the user token
+        description: the user token or admin token
         required: true
         schema:
           type: string
@@ -306,7 +372,7 @@ paths:
           $ref: '#/definitions/books'
       - name: Authorization
         in: header
-        description: the user token
+        description: the user token or admin
         required: true
         schema:
           type: string
@@ -358,7 +424,7 @@ paths:
         type: integer
       - name: Authorization
         in: header
-        description: the user token
+        description: the user token or admin token
         required: true
         schema:
           type: string
@@ -387,6 +453,12 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/books'
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -408,6 +480,12 @@ paths:
         description: book Id
         required: true
         type: integer
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -433,6 +511,12 @@ paths:
         description: number of items per page
         required: false
         type: integer
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -451,6 +535,12 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/authors'
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         201:
           description: 'Created'
@@ -473,6 +563,12 @@ paths:
         description: author Id
         required: true
         type: integer
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -498,6 +594,12 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/authors'
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -519,6 +621,12 @@ paths:
         description: author Id
         required: true
         type: integer
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -544,6 +652,12 @@ paths:
         description: number of items per page
         required: false
         type: integer
+      - name: Authorization
+        in: header
+        description: the user or admin token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -562,6 +676,12 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/categories'
+      - name: Authorization
+        in: header
+        description: the admin or user token
+        required: true
+        schema:
+          type: string
       responses:
         201:
           description: 'Created'
@@ -584,6 +704,12 @@ paths:
         description: category Id
         required: true
         type: integer
+      - name: Authorization
+        in: header
+        description: the admin or user token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -609,6 +735,12 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/categories'
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -630,6 +762,12 @@ paths:
         description: category Id
         required: true
         type: integer
+      - name: Authorization
+        in: header
+        description: the admin token
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: 'OK'
@@ -1010,6 +1148,18 @@ definitions:
       password:
         type: string
         description: user Password
+  admin:
+    type: object
+    required:
+        - username
+        - password
+    properties:
+      password:
+        type: string
+        description: admin password
+      username:
+        type: string
+        description: admin username
   auth:
     type: object
     required:

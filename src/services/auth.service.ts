@@ -9,9 +9,12 @@ import { User } from '@interfaces/users.interface';
 import { isEmpty } from '@utils/util';
 import { redisDB } from '@databases';
 import { sendOTP } from '@/utils/sendSMS';
+import { CreateAdminDto } from '@/dtos/admin.dto';
+import { Admin } from '@/interfaces/admins.interface';
 
 class AuthService {
   public users = DB.Users;
+  public admins = DB.Admin;
 
   public async login(userData: CreateUserDto): Promise<TokenData> {
     if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
@@ -23,6 +26,36 @@ class AuthService {
     if (!isPasswordMatching) throw new HttpException(409, 'Password not matching');
 
     return this.createToken(findUser);
+  }
+
+  public async signupAdmin(userData: CreateAdminDto): Promise<Admin> {
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+
+    const findUserByUsername: Admin = await this.admins.findOne({ where: { username: userData.username } });
+    if (findUserByUsername) throw new HttpException(409, `This username ${userData.username} already exists`);
+
+    const hashedPassword = await hash(userData.password, 10);
+    const createUserData: Admin = await this.admins.create({ ...userData, password: hashedPassword });
+
+    return createUserData;
+  }
+
+  public async adminLogin(userData: CreateAdminDto): Promise<TokenData> {
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+    const findAdmin: Admin = await this.admins.findOne({ where: { username: userData.username } });
+    if (!findAdmin) throw new HttpException(409, `This username ${userData.username} was not found`);
+    const isPasswordMatching: boolean = await compare(userData.password, findAdmin.password);
+    if (!isPasswordMatching) throw new HttpException(409, 'Password not matching');
+    return this.createToken(findAdmin, 'admin');
+  }
+
+  public async logoutAdmin(userData: Admin): Promise<Admin> {
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
+
+    const findAdmin: Admin = await this.admins.findOne({ where: { username: userData.username, password: userData.password } });
+    if (!findAdmin) throw new HttpException(409, "User doesn't exist");
+
+    return findAdmin;
   }
 
   public async getOTPs(): Promise<Array<Record<string, string>>> {
@@ -74,7 +107,7 @@ class AuthService {
     return userData;
   }
 
-  public createToken(user: User, iss = 'user'): TokenData {
+  public createToken(user: User | Admin, iss = 'user'): TokenData {
     const dataStoredInToken: DataStoredInToken = { id: user.id, iss };
     const secretKey: string = SECRET_KEY;
     const expiresIn: number = 60 * 60 * 24 * 7;

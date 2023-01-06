@@ -13,6 +13,7 @@ import voucherModel from '@/models/voucher.model';
 import userBook from '@/models/userBooks.model';
 import * as redis from 'redis';
 import { REDIS_CONN_STRING } from '@/config';
+import adminModel from '@/models/admin.model';
 //add redis database for storing otp and user phone
 const client = redis.createClient({
   url: REDIS_CONN_STRING,
@@ -54,6 +55,7 @@ const DB = {
   Author: AuthorModel(sequelize),
   Category: CategoryModel(sequelize),
   Voucher: voucherModel(sequelize),
+  Admin: adminModel(sequelize),
   sequelize, // connection instance (RAW queries)
   Sequelize, // library
 };

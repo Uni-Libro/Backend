@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { CreateUserDto, OTPUserDto, ValidateOTPUserDto } from '@dtos/users.dto';
 import { User } from '@interfaces/users.interface';
-import { RequestWithUser } from '@interfaces/auth.interface';
+import { RequestWithAdmin, RequestWithUser } from '@interfaces/auth.interface';
 import AuthService from '@services/auth.service';
+import { CreateAdminDto } from '@/dtos/admin.dto';
+import { Admin } from '@/interfaces/admins.interface';
 
 class AuthController {
   public authService = new AuthService();
@@ -13,6 +15,39 @@ class AuthController {
       const tokenData = await this.authService.login(userData);
 
       res.status(200).json({ data: tokenData, message: 'login' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public adminLogIn = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userData: CreateAdminDto = req.body;
+      const tokenData = await this.authService.adminLogin(userData);
+      res.status(200).json({ data: tokenData, message: 'login' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public adminSignUp = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userData: CreateAdminDto = req.body;
+      const signUpUserData: Admin = await this.authService.signupAdmin(userData);
+
+      res.status(201).json({ data: signUpUserData, message: 'signup' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public logOutAdmin = async (req: RequestWithAdmin, res: Response, next: NextFunction) => {
+    try {
+      const userData: Admin = req.user;
+      const logOutUserData: Admin = await this.authService.logoutAdmin(userData);
+
+      res.setHeader('Set-Cookie', ['Authorization=; Max-age=0']);
+      res.status(200).json({ data: logOutUserData, message: 'logout' });
     } catch (error) {
       next(error);
     }
