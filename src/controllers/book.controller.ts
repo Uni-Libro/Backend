@@ -40,7 +40,8 @@ class BookController {
         this.bookUserService.hasBook(bookId, req.user.id),
         this.cartService.hasBook(bookId, req.user.id),
       ]);
-      res.status(200).json({ data: { ...findOneBookData, isBuyed, isInCart }, message: 'findOne' });
+      const downloadUrl = isBuyed ? await this.booksService.getFileDownloadUrl(findOneBookData.id) : null;
+      res.status(200).json({ data: { ...findOneBookData, isBuyed, isInCart, downloadUrl }, message: 'findOne' });
     } catch (error) {
       next(error);
     }
