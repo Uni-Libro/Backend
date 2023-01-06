@@ -9,8 +9,8 @@ import { isEmpty } from '@utils/util';
 class AuthorService {
   public authors = DB.Author;
 
-  public async findAllAuthor({ limit, page }: Pagination): Promise<Author[]> {
-    return this.authors.findAll({
+  public async findAllAuthor({ limit, page }: Pagination): Promise<{ rows: Author[]; count: number }> {
+    return this.authors.findAndCountAll({
       limit,
       offset: page ? page * PAGE_SIZE : undefined,
     });
@@ -37,7 +37,7 @@ class AuthorService {
 
     await this.authors.update({ ...authorData }, { where: { id: authorId } });
 
-    return findedAuthor;
+    return { ...findedAuthor, ...authorData };
   }
 
   public async deleteAuthor(authorId: number): Promise<Author> {

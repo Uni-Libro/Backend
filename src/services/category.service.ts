@@ -9,8 +9,8 @@ import { isEmpty } from '@utils/util';
 class CategoryService {
   public categories = DB.Category;
 
-  public async findAllCategory({ limit, page }: Pagination): Promise<Category[]> {
-    return this.categories.findAll({
+  public async findAllCategory({ limit, page }: Pagination): Promise<{ rows: Category[]; count: number }> {
+    return this.categories.findAndCountAll({
       limit: limit ? Number(limit) : undefined,
       offset: page ? page * PAGE_SIZE : undefined,
     });

@@ -8,12 +8,11 @@ import { PAGE_SIZE } from '@/config';
 class UserService {
   public users = DB.Users;
 
-  public async findAllUser({ limit, page }: Pagination): Promise<User[]> {
-    const allUser: User[] = await this.users.findAll({
+  public async findAllUser({ limit, page }: Pagination): Promise<{ rows: User[]; count: number }> {
+    return await this.users.findAndCountAll({
       limit,
       offset: page ? page * PAGE_SIZE : undefined,
     });
-    return allUser;
   }
 
   public async findUserById(userId: number): Promise<User> {

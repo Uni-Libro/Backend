@@ -9,7 +9,7 @@ class CategoryController {
   public getCategories = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { limit, page } = req.query;
-      const findAllCategoriesData: Category[] = await this.categoryService.findAllCategory({
+      const findAllCategoriesData = await this.categoryService.findAllCategory({
         limit: limit ? Number(limit) : undefined,
         page: page ? Number(page) : undefined,
       });

@@ -10,7 +10,7 @@ class UsersController {
   public getUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { limit, page } = req.query;
-      const findAllUsersData: User[] = await this.userService.findAllUser({
+      const findAllUsersData = await this.userService.findAllUser({
         limit: limit ? Number(limit) : undefined,
         page: page ? Number(page) : undefined,
       });
