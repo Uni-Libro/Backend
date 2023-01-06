@@ -1,6 +1,7 @@
 import { PAGE_SIZE } from '@/config';
 import { Pagination } from '@/interfaces/API.interface';
-import DB from '@databases';
+import { Book } from '@/interfaces/books.interface';
+import DB, { Relations } from '@databases';
 import { CreateAuthorDto } from '@dtos/authors.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { Author } from '@interfaces/author.interface';
@@ -8,6 +9,7 @@ import { isEmpty } from '@utils/util';
 
 class AuthorService {
   public authors = DB.Author;
+  public books = DB.Books;
 
   public async findAllAuthor({ limit, page }: Pagination): Promise<{ rows: Author[]; count: number }> {
     return this.authors.findAndCountAll({
@@ -16,11 +18,13 @@ class AuthorService {
     });
   }
 
-  public async findAuthorById(authorId: number): Promise<Author> {
-    const findedAuthor: Author = await this.authors.findOne({ where: { id: authorId } });
+  public async findAuthorById(authorId: number): Promise<Author & { books: Book[] }> {
+    const findedAuthor: Author = (await this.authors.findByPk(authorId)).toJSON();
     if (!findedAuthor) throw new HttpException(404, "The author you're looking for doesn't exist");
-
-    return findedAuthor;
+    const books = await this.books.findAll({
+      include: [{ model: DB.Author, where: { id: authorId } }, { model: DB.Category }],
+    });
+    return { ...findedAuthor, books };
   }
 
   public async createAuthor(authorData: CreateAuthorDto): Promise<Author> {

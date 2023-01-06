@@ -9,7 +9,7 @@ class AuthorController {
   public getAuthors = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { limit, page } = req.query;
-      const findAllAuthorsData: Author[] = await this.authorService.findAllAuthor({
+      const findAllAuthorsData = await this.authorService.findAllAuthor({
         limit: limit ? Number(limit) : undefined,
         page: page ? Number(page) : undefined,
       });
@@ -23,7 +23,7 @@ class AuthorController {
   public getAuthorById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = Number(req.params.id);
-      const findOneAuthorData: Author = await this.authorService.findAuthorById(userId);
+      const findOneAuthorData = await this.authorService.findAuthorById(userId);
 
       res.status(200).json({ data: findOneAuthorData, message: 'findOne' });
     } catch (error) {
