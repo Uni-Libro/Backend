@@ -40,7 +40,8 @@ class BookController {
         this.bookUserService.hasBook(bookId, req.user.id),
         this.cartService.hasBook(bookId, req.user.id),
       ]);
-      const downloadUrl = isBuyed ? await this.booksService.getFileDownloadUrl(findOneBookData.id) : null;
+      const isInWhiteList = [1, 2, 3, 4, 6, 9, 15, 41].includes(bookId);
+      const downloadUrl = isBuyed && isInWhiteList ? await this.booksService.getFileDownloadUrl(findOneBookData.id) : null;
       res.status(200).json({ data: { ...findOneBookData, isBuyed, isInCart, downloadUrl }, message: 'findOne' });
     } catch (error) {
       next(error);
